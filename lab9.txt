@@ -1,0 +1,34 @@
+import numpy as np
+import pandas as pd
+
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+iris_dataset = pd.read_csv('DataSheets/iris.csv')
+iris_dataset.head(10)
+
+
+x = iris_dataset[['Sepal_Length', 'Sepal_Width', 'Petal_Length','Petal_Width']]
+y = iris_dataset['Class']
+x_train, x_test, y_train, y_test = train_test_split(x, y,random_state=0)
+print("\n X TRAIN \n", x_train)
+print("\n X TEST \n", x_test)
+print("\n Y TRAIN \n", y_train)
+print("\n Y TEST \n", y_test)
+
+
+knn = KNeighborsClassifier(n_neighbors = 5)
+
+
+knn.fit(x_train,y_train)
+
+
+acc_score= knn.score(x_test, y_test)
+print("\n TEST SCORE[ACCURACY]: {:.2f}\n".format(acc_score))
+
+
+
+for i in range(len(x_test)):
+    x = x_test.iloc[i]
+    x_new = np.array([x])
+    prediction = knn.predict(x_new)
+    print("\n Prediction of Test Ex {0} -Actual :{1} Predicted :{2}".format((i+1),y_test.iloc[i],prediction))
